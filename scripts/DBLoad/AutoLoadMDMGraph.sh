@@ -13,6 +13,7 @@ $CMD /opt/neo4j/stage/DataSource/LoadDataEntities.cql
 # LOADING DATA ENTITY ATTRIBUTES
 $CMD /opt/neo4j/stage/DataSource/LoadDataEntityAttributes.cql
 # LOADING DATA PROVIDER - ENTITY RELS
+sleep 60 # waiting for indexes to build
 $CMD /opt/neo4j/stage/DataSourcea/LoadProviderEntityRels.cql
 # LOADING DATA ENTITY - ATTRIBUTE RELS
 $CMD /opt/neo4j/stage/DataSource/LoadEntityAttributeRels.cql
