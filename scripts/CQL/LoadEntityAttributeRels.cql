@@ -1,0 +1,1 @@
+using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/DataEntityToDataEntityAttribute.csv" AS line fieldterminator '^' MATCH (e:DataEntity {DataEntityAlias: line[0] }) MATCH (a:DataEntityAttribute {DataEntityAttributeAlias: line[1] })  CREATE (a)-[:DESCRIBES]->(e);

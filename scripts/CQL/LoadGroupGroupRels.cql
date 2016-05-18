@@ -1,0 +1,1 @@
+using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/PK_Group_Group.csv" AS line fieldterminator '^' MATCH (g:Group {GroupAlias: line[0] }) MATCH (p:Group {GroupAlias: line[1] })  CREATE (g)-[:MEMBER_OF]->(p);

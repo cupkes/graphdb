@@ -1,0 +1,2 @@
+using periodic commit 10000 load csv from 'file:///opt/neo4j/stage/DataSource/Server.csv' as line Fieldterminator '^'  Create (s:Server {ServerName: line[0], ServerDisplayName: line[1], ServerFQDN: line[2]});
+create index on :Server(ServerName);

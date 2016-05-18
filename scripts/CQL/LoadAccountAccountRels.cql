@@ -1,0 +1,1 @@
+using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/MemberSponsor.csv" AS line fieldterminator '^' MATCH (a:ADAccount {AccountAlias: line[0] }) MATCH (as:ADAccount {AccountAlias: line[1] }) CREATE (a)-[:SPONSOR_OF]->(as);

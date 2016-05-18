@@ -1,0 +1,1 @@
+using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/DataProviderToDataEntity.csv" AS line fieldterminator '^' MATCH (p:DataProvider {DataProviderAlias: line[0] }) MATCH (e:DataEntity {DataEntityAlias: line[1] })  CREATE (e)-[:PROVIDED_BY]->(p);

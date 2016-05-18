@@ -1,0 +1,1 @@
+using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/SiloMember.csv" AS line fieldterminator '^' MATCH (s:Silo {SiloName: line[0] }) MATCH (a:ADAccount {AccountAlias: line[1] })  CREATE (a)-[:MEMBER_OF]->(s);

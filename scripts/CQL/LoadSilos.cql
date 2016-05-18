@@ -1,0 +1,2 @@
+using periodic commit 10000 load csv from 'file:///opt/neo4j/stage/DataSource/Silo.csv' as line Fieldterminator '^'  Create (o:Silo {SiloName: line[0], SiloDisplayName: line[1], SiloShortDesc: line[2], SiloLongDesc: line[3], SiloOU: line[5], SiloBaseOU: line[6]});
+create index on :Silo(SiloName);
