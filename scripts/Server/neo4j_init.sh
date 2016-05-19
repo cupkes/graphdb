@@ -87,6 +87,7 @@ fi
 # update the profile script to include essential path values
 # and helpful aliases and shell configurations
 #
+cp ~/.bash_profile ~/.bash_profile.bak
 
 cat << ENDOC >> ~/.bash_profile
 # NEO4J SUPPORT MODIFICATION
@@ -167,11 +168,11 @@ if [ -d $NEOHOME ]; then
 	
 	# update server properties file with cluster configuration details
 	
-	sed -i s/xthis_server_num/$THISNUM $NEO4J_PROP_FILE
-	sed -i s/xsrv1ip/$NODE1_IP $NEO4J_PROP_FILE
-	sed -i s/xsrv2ip/$NODE2_IP $NEO4J_PROP_FILE
-	sed -i s/xsrv3ip/$NODE3_IP $NEO4J_PROP_FILE
-	sed -i s/xthis_server_ip/$THISIP $NEO4J_PROP_FILE
+	sed -i 's/xthis_server_num/$THISNUM/g' $NEO4J_PROP_FILE
+	sed -i 's/xsrv1ip/$NODE1_IP/g' $NEO4J_PROP_FILE
+	sed -i 's/xsrv2ip/$NODE2_IP/g' $NEO4J_PROP_FILE
+	sed -i 's/xsrv3ip/$NODE3_IP/g' $NEO4J_PROP_FILE
+	sed -i 's/xthis_server_ip/$THISIP/g' $NEO4J_PROP_FILE
 	
 	
 	logger -p local0.notice -t $LOGTAG "neo4j cluster configuration updated"
@@ -192,7 +193,7 @@ AIDETEST=(yum list installed aide |& grep Error | awk '{ print $1 }' | sed s/://
 
 # install the aide package if it is missing
 
-if [ $AIDETEST = "Error" ]
+if [ $AIDETEST == "Error" ]
 then
     echo "AIDE not installed, installing" && logger -p local0.notice -t $LOGTAG "installing AIDE"
 	yum install -y aide
@@ -286,7 +287,7 @@ JDKTEST=(yum list installed java-1.8.0-openjdk |& grep Error | awk '{ print $1 }
 
 # if there is no jdk installed, install the openjdk 1.8.0 package
 
-if [ $JDKTEST = "Error" ]
+if [ $JDKTEST == "Error" ]
 then
     echo "JDK not installed, installing" && logger -p local0.notice -t $LOGTAG "installing JDK"
 	yum install -y java-1.8.0-openjdk
@@ -328,7 +329,7 @@ logger -p local0.notice -t $LOGTAG "/etc/hosts modified"
 
 AUDITTEST=(yum list installed audit |& grep Error | awk '{ print $1 }' | sed s/://) 
 
-if [ $AUDITTEST = "Error" ]
+if [ $AUDITTEST == "Error" ]
 then
     echo "AUDIT not installed, installing" && logger -p local0.notice -t $LOGTAG "installing AUDIT"
 	yum install -y audit
@@ -338,11 +339,13 @@ fi
 
 # set audit rules -- here I use stig because it's thorough
 
+
+
 auditctl -R /usr/share/doc/audit-version/stig.rules
-
-logger -p local0.notice -t $LOGTAG "auditing rules loaded and auditing started"
-
 if [ $? -eq 0 ]; then
+	echo "audit rules loaded"
+	logger -p local0.notice -t $LOGTAG "auditing rules loaded and auditing started"
+else
 	echo "unable to reload audit daemon with new rules\n"
 	echo "please execute auditctl -R and provide valid rules file\n"
 	logger -p local0.notice -t $LOGTAG "erro loading audit rules"
@@ -373,7 +376,7 @@ cd $NEOBIN
 chmod +x $SAMBA_SCRIPT
 ./$SAMBA_SCRIPT
 RETVAL=$?
-if [ $RETVAL -eq 0 ]; then
+if [ $RETVAL -ne 0 ]; then
 	echo "samba script failed at exit $RETVAL\n"
 	exit 1
 else
@@ -397,7 +400,7 @@ cd $NEOBIN
 chmod +x $FIREWALL_SCRIPT
 ./FIREWALL_SCRIPT
 RETVAL=$?
-if [ $RETVAL -eq 0 ]; then
+if [ $RETVAL -ne 0 ]; then
 	echo "firewall script failed at exit $RETVAL\n"
 	exit 1
 else
