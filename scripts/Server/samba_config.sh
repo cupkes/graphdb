@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
 	exit 1
 else
 	# continue configuration
-	SAMBATEST=(sudo yum list installed samba |& grep Error | awk '{ print $1 }' | sed s/://) 
+	SAMBATEST=$(sudo yum list installed samba |& grep Error | awk '{ print $1 }' | sed s/://) 
 
 	if [ $SAMBATEST== "Error" ]; then
 		echo "installing Samba\n"

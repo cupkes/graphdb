@@ -64,12 +64,12 @@ THISNUM=1
 # Remove Neo4j directory structures
 #------------------------------------------------
 
-echo "Removing Neo4j home and support directories\n"
+echo "Removing Neo4j home and support directories"
 cd /
 rm -r $NEOBASE
 
 if [ $? -ne 0 ]; then
-	echo "Could not remove neo4j directories and files\n"
+	echo "Could not remove neo4j directories and files"
 	exit 1
 else
 	echo "Neo4j directories and files removed"
@@ -89,46 +89,46 @@ logger -p local0.notice -t $LOGTAG "neo4j home and support directories removed"
 
 yum remove -y aide
 if [ $? -eq 0 ]; then
-	echo "aide package removed\n" && logger -p local0.notice -t $LOGTAG "aide package removed"
+	echo "aide package removed" && logger -p local0.notice -t $LOGTAG "aide package removed"
 else
-	echo "error removing aide package\n"
+	echo "error removing aide package"
 	exit 2
 fi
 
 yum remove -y java-1.8.0-openjdk
 if [ $? -eq 0 ]; then
-	echo "openjdk-1.8.0 package removed\n" && logger -p local0.notice -t $LOGTAG "jdk package removed"
+	echo "openjdk-1.8.0 package removed" && logger -p local0.notice -t $LOGTAG "jdk package removed"
 else
-	echo "error removing jdk package\n"
+	echo "error removing jdk package"
 	exit 3
 fi
 systemctl stop smb.service
 if [ $? -ne 0 ]; then
-	echo "error stopping Samba service\n"
+	echo "error stopping Samba service"
 	logger -p local0.notice -t $LOGTAG "error stopping Samba service"
 	exit 3
 else
-	echo "stopped Samba service\n"
+	echo "stopped Samba service"
 	logger -p local0.notice -t $LOGTAG "stopped Samba service"
 	
 fi
 
 systemctl disable smb.service
 if [ $? -ne 0 ]; then
-	echo "error disabling Samba service\n"
+	echo "error disabling Samba service"
 	logger -p local0.notice -t $LOGTAG "error disabled Samba service"
 	exit 3
 else
-	echo "disabled Samba service\n"
+	echo "disabled Samba service"
 	logger -p local0.notice -t $LOGTAG "disabled Samba service"
 	
 fi
 
 yum remove -y samba
 if [ $? -eq 0 ]; then
-	echo "samba package removed\n" && logger -p local0.notice -t $LOGTAG "samba package removed"
+	echo "samba package removed" && logger -p local0.notice -t $LOGTAG "samba package removed"
 else
-	echo "error removing jdk package\n"
+	echo "error removing jdk package"
 	exit 4
 fi
 

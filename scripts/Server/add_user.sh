@@ -21,7 +21,7 @@ if [ $(id -u) -eq 0 ]; then
 				echo "User added to wheel group for sudo"
 				logger -p local0.notice -t $LOGTAG "user $username added to wheel group"
 			else
-				echo "Unable to add user to wheel group\n"
+				echo "Unable to add user to wheel group"
 				logger -p local0.notice -t $LOGTAG "unablel to add user $username to wheel group"
 				exit 2
 			fi			

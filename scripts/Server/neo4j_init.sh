@@ -34,7 +34,7 @@ NEO4J_PROP_FILE=neo4j.properties
 NEO4J_SRV_PROP_FILE=neo4j-server.properties
 # support tarballs
 SUPPORT_TGZ_FILE=neo4j_support.tar.gz
-NEO4j_SERVER_TGZ=neo4j-enterprise-2.3.3-unix.tar.gz
+NEO4J_SERVER_TGZ=neo4j-enterprise-2.3.3-unix.tar.gz
 # monitoring, backup and diagnostics scripts
 SUPPORT_SCRIPT=neojf_support_diags.sh
 MONITOR_SCRIPT=neo4j_monitor.sh
@@ -64,7 +64,7 @@ THISNUM=1
 # Create Neo4j directory structures
 #------------------------------------------------
 
-echo "Creating Neo4j home and support directories\n"
+echo "Creating Neo4j home and support directories"
 cd /
 mkdir -p $NEOETC && chmod 755 $NEOETC
 mkdir -p $NEOBIN && chmod 755 $NEOBIN
@@ -79,7 +79,7 @@ logger -p local0.notice -t $LOGTAG "neo4j home and support directories created"
 # make sure the neo4j home directory exists
 
 if [ ! -d /home/neo4j ]; then
-	echo "cannot locate neo4j home directory\n"
+	echo "cannot locate neo4j home directory"
 	exit 1
 fi
 
@@ -154,7 +154,7 @@ logger -p local0.notice -t $LOGTAG "support files deployed"
 
 # uncompress neo4j enterprise server tarball
 
-tar -zxvf $NEO4j_SERVER_TGZ $NEOBASE && logger -p local0.notice -t $LOGTAG "Neo4j Enterprise Server files deployed"
+tar -zxvf $NEO4J_SERVER_TGZ $NEOBASE && logger -p local0.notice -t $LOGTAG "Neo4j Enterprise Server files deployed"
 
 # backup existing configuration files and copy over provided configuration files
 
@@ -177,8 +177,8 @@ if [ -d $NEOHOME ]; then
 	
 	logger -p local0.notice -t $LOGTAG "neo4j cluster configuration updated"
 else
-	echo "cannot locate neo4j home directory\n"
-	echo "manual configuration of neo4j cluster is required\n"
+	echo "cannot locate neo4j home directory"
+	echo "manual configuration of neo4j cluster is required"
 	
 	logger -p local0.notice -t $LOGTAG "unable to deploy neo4j ccluster configuration files"
 fi
@@ -203,7 +203,7 @@ fi
 
 # update the crontab mailto configuration with the admin email
 
-sed -i s/root/$ADMIN_EMAIL/ /etc/crontab
+sed -i 's/root/$ADMIN_EMAIL/' /etc/crontab
 
 # initialize the aide package and get the service started
 
@@ -268,8 +268,8 @@ logger -p local0.notice -t $LOGTAG "pam.d/su modified"
 # If you continue experiencing exceptions on Too many open files or Could not stat() directory,
 # you may have to raise the limit further.
 
-echo "required server configuration changes complete.\n"
-echo "System must be restarted before changes take affect\n"
+echo "required server configuration changes complete."
+echo "System must be restarted before changes take affect"
 
 #------------------------------------------------
 # Install a jdk
@@ -346,8 +346,8 @@ if [ $? -eq 0 ]; then
 	echo "audit rules loaded"
 	logger -p local0.notice -t $LOGTAG "auditing rules loaded and auditing started"
 else
-	echo "unable to reload audit daemon with new rules\n"
-	echo "please execute auditctl -R and provide valid rules file\n"
+	echo "unable to reload audit daemon with new rules"
+	echo "please execute auditctl -R and provide valid rules file"
 	logger -p local0.notice -t $LOGTAG "erro loading audit rules"
 fi
 
@@ -377,10 +377,10 @@ chmod +x $SAMBA_SCRIPT
 ./$SAMBA_SCRIPT
 RETVAL=$?
 if [ $RETVAL -ne 0 ]; then
-	echo "samba script failed at exit $RETVAL\n"
+	echo "samba script failed at exit $RETVAL"
 	exit 1
 else
-	echo "samba script successful\n"
+	echo "samba script successful"
 fi
 
 
@@ -401,10 +401,10 @@ chmod +x $FIREWALL_SCRIPT
 ./FIREWALL_SCRIPT
 RETVAL=$?
 if [ $RETVAL -ne 0 ]; then
-	echo "firewall script failed at exit $RETVAL\n"
+	echo "firewall script failed at exit $RETVAL"
 	exit 1
 else
-	echo "firewall script successful\n"
+	echo "firewall script successful"
 fi
 
 
@@ -421,7 +421,7 @@ fi
 #
 
 cp $BACKUP_SCRIPT $NEOBIN/$BACKUP_SCRIPT
-echo "backup script copied to $NEOBIN\n"
+echo "backup script copied to $NEOBIN"
 echo "to schedule backup routine copy  $BACKUP_SCRIPT to /etc/cron.daily"
 
 #------------------------------------------------
