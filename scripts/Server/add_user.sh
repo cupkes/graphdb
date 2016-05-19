@@ -1,5 +1,7 @@
 #!/bin/bash
 # Script to add a user to Linux system
+# Script tested by Christopher Upkes, 5-19-2016
+#######################################################
 LOGTAG="NEO4J_SUPPORT"
 if [ $(id -u) -eq 0 ]; then
 	read -p "Enter username : " username
@@ -11,11 +13,11 @@ if [ $(id -u) -eq 0 ]; then
 	else
 		pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
 		useradd -m -p $pass $username
-		if [ $? eq 0 ]; then
+		if [ $? -eq 0 ]; then
 			echo "User has been added to system!"
 			logger -p local0.notice -t $LOGTAG "user $username added to server"
 			usermod -G10 $username
-			if [ $? eq 0 ]; then
+			if [ $? -eq 0 ]; then
 				echo "User added to wheel group for sudo"
 				logger -p local0.notice -t $LOGTAG "user $username added to wheel group"
 			else
