@@ -2,6 +2,7 @@
 #
 #
 # Script updating firewall
+# Script tested by Christopher Upkes, 03-19-2016
 ###########################################
 LOGTAG="NEO4J_SUPPORT"
 NEOHOME="/opt/neo4j"
