@@ -189,7 +189,7 @@ fi
 
 # check to see if the aide package is already installed
 
-AIDETEST=(yum list installed aide |& grep Error | awk '{ print $1 }' | sed s/://) 
+AIDETEST=$(yum list installed aide |& grep Error | awk '{ print $1 }' | sed s/://) 
 
 # install the aide package if it is missing
 
@@ -283,7 +283,7 @@ echo "System must be restarted before changes take affect"
 # We should improve this script by checking for multiple releases (6,7,8)
 # and multiple vendors (openjdk, Oracle).
 
-JDKTEST=(yum list installed java-1.8.0-openjdk |& grep Error | awk '{ print $1 }' | sed s/://) 
+JDKTEST=$(yum list installed java-1.8.0-openjdk |& grep Error | awk '{ print $1 }' | sed s/://) 
 
 # if there is no jdk installed, install the openjdk 1.8.0 package
 
@@ -327,7 +327,7 @@ logger -p local0.notice -t $LOGTAG "/etc/hosts modified"
 
 # check to see if auditing is installed and install if it is missing
 
-AUDITTEST=(yum list installed audit |& grep Error | awk '{ print $1 }' | sed s/://) 
+AUDITTEST=$(yum list installed audit |& grep Error | awk '{ print $1 }' | sed s/://) 
 
 if [ $AUDITTEST == "Error" ]
 then
