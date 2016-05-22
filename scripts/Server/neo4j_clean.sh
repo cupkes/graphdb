@@ -34,7 +34,7 @@ NEO4J_PROP_FILE=neo4j.properties
 NEO4J_SRV_PROP_FILE=neo4j-server.properties
 # support tarballs
 SUPPORT_TGZ_FILE=neo4j_support.tar.gz
-NEO4j_SERVER_TGZ=neo4j-enterprise-2.3.3-unix.tar.gz
+NEO4J_SERVER_TGZ=neo4j-enterprise-2.3.3-unix.tar.gz
 # monitoring, backup and diagnostics scripts
 SUPPORT_SCRIPT=neojf_support_diags.sh
 MONITOR_SCRIPT=neo4j_monitor.sh
