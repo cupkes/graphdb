@@ -6,6 +6,7 @@
 LOGTAG="NEO4J_SUPPORT"
 NEOBASE="/opt/neo4j"
 SAMBA_FILE=neoj4_smb.conf
+PWDSCRIPT=makesmbpasswd.sh
 
 NEOLOG=neo4j_install.log
 
@@ -24,6 +25,7 @@ firewall-cmd --list-ports | grep 137
 if [ $? -ne 0 ]; then
 	echo "Samba port 137 not open, aborting script\n"
 	logger -p local0.notice -t $LOGTAG "error configuring Samba.  UDP port not open"
+	echo "$(date) ERROR: Firewall not configured for Samba"
 	exit 1
 else
 	# continue configuration
@@ -67,7 +69,12 @@ else
 			
 		fi
 	fi
-	chmod +x $NEOBASE/etc/makesmbpasswd.sh
-	cat /etc/passwd | mksmbpasswd.sh > /etc/samba/smbpasswd
-	chmod 600 /etc/samba/smbpasswd	
+	if [ -e $PWDSCRIPT ]; then
+		chmod +x $PWDSCRIPT
+		cat /etc/passwd | $PWDSCRIPT > /etc/samba/smbpasswd
+		chmod 600 /etc/samba/smbpasswd	
+	else
+		echo "unable to lcoate $PWDSCRIPT"
+		echo "$(date) ERROR: unable to locate $PWDSCRIPT, /etc/samba/smbpassword not created" >> $NEOLOG
+	fi
 fi
