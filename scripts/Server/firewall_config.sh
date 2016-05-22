@@ -10,6 +10,15 @@ NEOBIN="/opt/neo4j_support/bin"
 NEOETC="/opt/neo4j_support/etc"
 NEOBAK="/opt/neo4j/backup"
 logger -p local0.notice -t $LOGTAG "modifying iptables"
+NEOLOG=neo4j_install.log
+
+if [ -e $NEOLOG]; then
+	echo "located log file"
+else
+	echo "unable to locate log file, creating new log file"
+	echo "$(date) : begin Neo4J installation logging -- " > $NEOLOG
+fi
+
 
 # open http and https ports
 firewall-cmd --permanent --add-port=7474/tcp

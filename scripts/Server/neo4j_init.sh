@@ -18,6 +18,7 @@ NEOBIN="$NEOSUPP/bin"
 NEOETC="$NEOSUPP/etc"
 NEOBAK="$NEOBASE/backup"
 NEOCONF="$NEOHOME/conf"
+NEOLOG=neo4j_install.log
 #NEOBASE="/db/neo4j"
 #NEOBIN="/db/neo4j_support/bin""
 #NEOETC="/db/neo4j_support/etc"
@@ -59,6 +60,14 @@ THISNUM=1
 #------------------------------------------------
 # End script variables
 #------------------------------------------------
+if [ -e $NEOLOG]; then
+	echo "located log file"
+	echo "---------------------------------------------" >> $NOELOG
+	echo "$(date) : begin Neo4J installation logging --" >> $NEOLOG
+else
+	echo "unable to locate log file, creating new log file"
+	echo "$(date) : begin Neo4J installation logging --" > $NEOLOG
+fi
 
 
 #------------------------------------------------

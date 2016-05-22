@@ -7,6 +7,16 @@ LOGTAG="NEO4J_SUPPORT"
 NEOBASE="/opt/neo4j"
 SAMBA_FILE=neoj4_smb.conf
 
+NEOLOG=neo4j_install.log
+
+if [ -e $NEOLOG]; then
+	echo "located log file"
+else
+	echo "unable to locate log file, creating new log file"
+	touch $NEOLOG
+fi
+
+
 cd $NEOBASE
 mkdir $NEOBASE/stage && chmod 755 $NEOBASE/stage
 
