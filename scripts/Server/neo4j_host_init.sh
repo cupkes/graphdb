@@ -1,6 +1,7 @@
 #!/bin/bash -e
 #
 # Script for host confirguration
+# Script tested on 5/22/2016 by Christopher Upkes
 #################################################
 LOGTAG=NEO4J_SUPPORT
 # specify the neo4j directory tree
@@ -8,13 +9,13 @@ JDKCONF=jdk_config.sh
 AIDECONF=aide_config.sh
 AUDITCONF=audit_config.sh
 SAMBACONF=samba_config.sh
-SAMBAFILE=neo4j_samba.conf
+SAMBAFILE=neo4j_smb.conf
 FIREWCONF=firewall_config.sh
 NEOLOG=neo4j_install.log
 NEOSTAGE=/opt/neo4j
 SAMBA="YES"
-JDK="YES"
-AIDE="YES"
+JDK="NO"
+AIDE="NO"
 FIREW="YES"
 AUDIT="YES"
 
@@ -25,18 +26,18 @@ if [ -d $NEOSTAGE ]; then
 		echo "$SAMBAFILE located"
 	else
 		echo "unable to locate $SAMBAFILE, skipping samaba install"
-		$SAMBA="NO"
+		SAMBA="NO"
 	fi
 else
 	echo "unable to locate $NEOBASE directory, skipping samba install"
-	$SAMBA="NO"
+	SAMBA="NO"
 fi
 
-if [ -e $NEOLOG]; then
+if [ -e $NEOLOG ]; then
 	echo "located log file"
 else
 	echo "unable to locate log file, creating new log file"
-	echo "$(date) : begin Neo4J installation logging -- " $NEOLOG
+	echo "$(date) : begin Neo4J installation logging -- " >> $NEOLOG
 fi
 
 echo "$(date) : executing neo4j_init_host script" >> $NEOLOG
@@ -49,16 +50,18 @@ echo "$(date) : executing neo4j_init_host script" >> $NEOLOG
 # The neo4j cluser requires at minimum a java 6 jdk to be installed
 #
 
-if [ $JDK == "YES" ] && [ -e $JDKCONF ]; then
+if [[ $JDK = "YES" && -e $JDKCONF ]]; then
 	chmod +x $JDKCONF
-	./$JKDCONF
+	source $JDKCONF
 	if [ $? -ne 0 ]; then
 		echo "script $JDKCONF returned error code, aborting script"
 		echo "ERROR: $JDKCONF script returned error code." >> $NEOLOG
 	fi
 else
+	if [ $JDK = "YES" ]; then
 	echo "failed to locate $JDKCONF script file, aborting script"
 	echo "ERROR: failed to locate $JDKCONF script file." >> $NEOLOG
+	fi
 fi
 
 
@@ -66,16 +69,18 @@ fi
 # Install intrusion detection package
 #------------------------------------------------
 
-if [ $AIDE == "YES" ] && [ -e $AIDECONF ]; then
+if [[ $AIDE = "YES" && -e $AIDECONF ]]; then
 	chmod +x $AIDECONF
-	./$AIDECONF
+	source $AIDECONF
 	if [ $? -ne 0 ]; then
 		echo "script $AIDECONF returned error code, aborting script"
 		echo "ERROR: $AIDECONF script returned error code." >> $NEOLOG
 	fi
 else
+	if [ $AIDE = "YES" ]; then
 	echo "failed to locate $AIDECONF script file, aborting script"
 	echo "ERROR: failed to locate $AIDECONF script file." >> $NEOLOG
+	fi
 fi
 
 #------------------------------------------------
@@ -86,17 +91,27 @@ fi
 # To ensure we meet the standard security certification guidelines,
 # we need to make sure auditing is installed and running rules
 # based on the considered requirements (stig, capp, nipsom, etc...).
-# 
-if [ $AUDIT == "YES" ] && [ -e $AUDITCONF ]; then
+#
+echo "AUDIT = $AUDIT and AUDITCONF = $AUDITCONF"
+
+if [ $AUDIT = "YES" ]; then
+	echo "as expected"
+else
+	echo "audit value error"
+fi
+
+if [[ $AUDIT = "YES" && -e $AUDITCONF ]]; then
 	chmod +x $AUDITCONF
-	./$AUDITCONF
+	source $AUDITCONF
 	if [ $? -ne 0 ]; then
 		echo "script $AUDITCONF returned error code, aborting script"
 		echo "ERROR: $AUDITCONF script returned error code." >> $NEOLOG
 	fi
 else
+	if [ $AUDIT = "YES" ]; then
 	echo "failed to locate $AUDITCONF script file, aborting script"
 	echo "ERROR: failed to locate $AUDITCONF script file." >> $NEOLOG
+	fi
 fi
 
 
@@ -112,16 +127,18 @@ fi
 
 # call firewall config script
 
-if [ $FIREW == "YES" ] && [ -e $FIREWCONF ]; then
+if [[ $FIREW = "YES" && -e $FIREWCONF ]]; then
 	chmod +x $FIREWCONF
-	./$FIREWCONF
+	source $FIREWCONF
 	if [ $? -ne 0 ]; then
 		echo "script $FIREWCONF returned error code, aborting script"
 		echo "ERROR: $FIREWCONF script returned error code." >> $NEOLOG
 	fi
 else
+	if [ $FIREW = "YES" ]; then
 	echo "failed to locate $FIREWCONF script file, aborting script"
 	echo "ERROR: failed to locate $FIREWCONF script file." >> $NEOLOG
+	fi
 fi
 
 #------------------------------------------------
@@ -135,17 +152,21 @@ fi
 
 # call samba config script
 
-if [ $SAMBA == "YES" ] && [ -e $SAMBACONF ]; then
+if [[ $SAMBA = "YES" && -e $SAMBACONF ]]; then
 	chmod +x $SAMBACONF
-	./$SAMBACONF
+	source $SAMBACONF
 	if [ $? -ne 0 ]; then
 		echo "script $SAMBACONF returned error code, aborting script"
 		echo "ERROR: $SAMBACONF script returned error code." >> $NEOLOG
 	fi
 else
+	if [ $SAMBA = "YES" ]; then
 	echo "failed to locate $SAMBACONF script file, aborting script"
 	echo "ERROR: failed to locate $SAMBACONF script file." >> $NEOLOG
+	fi
 fi
+
+echo "$(date) neo4j_init_host script finished"
 
 
 

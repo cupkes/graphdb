@@ -12,7 +12,7 @@ NEOBAK="/opt/neo4j/backup"
 logger -p local0.notice -t $LOGTAG "modifying iptables"
 NEOLOG=neo4j_install.log
 
-if [ -e $NEOLOG]; then
+if [ -e $NEOLOG ]; then
 	echo "located log file"
 else
 	echo "unable to locate log file, creating new log file"

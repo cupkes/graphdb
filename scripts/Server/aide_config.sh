@@ -1,15 +1,17 @@
 #!/bin/bash -e
 #
 #
-# Script building Samba shares
-###########################################
+# Script configuring intrusion detection
+# Script tested on 5/22/2016 by Christopher Upkes
+#################################################
 LOGTAG="NEO4J_SUPPORT"
 # provide the crontab entry for the intrusion detection module
 AIDE_ENTRY="0 1 * * * /usr/sbin/aide --check"
+ADMIN_EMAIL=dongyang@microsoft.com
 
 NEOLOG=neo4j_install.log
 
-if [ -e $NEOLOG]; then
+if [ -e $NEOLOG ]; then
 	echo "located log file"
 else
 	echo "unable to locate log file, creating new log file"
@@ -25,13 +27,13 @@ fi
 AIDETEST=$(yum list installed aide |& grep Error | awk '{ print $1 }' | sed s/://) 
 
 # install the aide package if it is missing
-
-if [ $AIDETEST == "Error" ]
-then
-    echo "AIDE not installed, installing" && logger -p local0.notice -t $LOGTAG "installing AIDE"
-	yum install -y aide
+if [ !-z $AIDETEST ]; then
+	echo "AIDE already installed"
 else
-    echo "AIDE already installed"
+	if [ $AIDETEST = "Error" ]; then
+		echo "AIDE not installed, installing" && logger -p local0.notice -t $LOGTAG "installing AIDE"
+		yum install -y aide
+	fi
 fi
 
 # update the crontab mailto configuration with the admin email
@@ -66,5 +68,6 @@ mv aide.db.new.gz aide.db.gz
 crontab -e
 
 echo "$AIDE_ENTRY " >> /etc/crontab
+
 
 logger -p local0.notice -t $LOGTAG "crontab updated with AIDE entry"

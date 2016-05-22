@@ -2,11 +2,12 @@
 #
 #
 # Script installling OpenJDK
-###########################################
+# Script tested on  5/22/2016 by Christopher UPkes
+##################################################
 LOGTAG="NEO4J_SUPPORT"
 NEOLOG=neo4j_install.log
 
-if [ -e $NEOLOG]; then
+if [ -e $NEOLOG ]; then
 	echo "located log file"
 else
 	echo "unable to locate log file, creating new log file"
@@ -29,10 +30,11 @@ JDKTEST=$(yum list installed java-1.8.0-openjdk |& grep Error | awk '{ print $1 
 
 # if there is no jdk installed, install the openjdk 1.8.0 package
 
-if [ $JDKTEST == "Error" ]
-then
-    echo "JDK not installed, installing" && logger -p local0.notice -t $LOGTAG "installing JDK"
-	yum install -y java-1.8.0-openjdk
+if [ -z $JDKTEST ]; then
+	echo "JDK already installed"
 else
-    echo "JDK already installed"
+	if [ $JDKTEST = "Error" ]; then
+		echo "JDK not installed, installing" && logger -p local0.notice -t $LOGTAG "installing JDK"
+		yum install -y java-1.8.0-openjdk
+	fi
 fi

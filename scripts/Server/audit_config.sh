@@ -1,12 +1,13 @@
 #!/bin/bash -e
 #
 #
-# Script installling OpenJDK
-###########################################
+# Script installling Audit
+# Script tested on 5/22/2016 by Christopher Upkes
+##################################################
 LOGTAG="NEO4J_SUPPORT"
 NEOLOG=neo4j_install.log
 
-if [ -e $NEOLOG]; then
+if [ -e $NEOLOG ]; then
 	echo "located log file"
 else
 	echo "unable to locate log file, creating new log file"
@@ -26,12 +27,13 @@ fi
 
 AUDITTEST=$(yum list installed audit |& grep Error | awk '{ print $1 }' | sed s/://) 
 
-if [ $AUDITTEST == "Error" ]
-then
+if [ -z $AUDITTEST ]; then
+	echo "AUDIT already installed"
+else
+	if [ $AUDITTEST = "Error" ]; then
     echo "AUDIT not installed, installing" && logger -p local0.notice -t $LOGTAG "installing AUDIT"
 	yum install -y audit
-else
-    echo "audit already installed"
+	fi
 fi
 
 # set audit rules -- here I use stig because it's thorough
