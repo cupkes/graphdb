@@ -7,9 +7,16 @@
 LOGTAG="NEO4J_SUPPORT"
 NEOBASE="/opt/neo4j"
 SAMBA_FILE=neo4j_smb.conf
+CLUSTCONF=cluster.conf
 PWDSCRIPT=mksmbpasswd.sh
 
 NEOLOG=neo4j_install.log
+
+if [ -z $SAMBAWINCLIENT ]; then
+	echo "loading cluster.conf file"
+	source $CLUSTCONF
+fi
+
 
 if [ -e $NEOLOG ]; then
 	echo "located log file"
@@ -83,7 +90,7 @@ else
 	if [ -e $SAMBA_FILE ]; then
 		echo "creating neo4j samba server config"
 		cp /etc/samba/smb.conf /etc/samba/smb.conf.bak && cp $SAMBA_FILE /etc/samba/smb.conf
-		read -p "Enter Windows server name : " winname && sed -i 's/node_name/$winname/' /etc/samba/smb.conf
+		sed -i s/node_name/$SAMBAWINCLIENT/g /etc/samba/smb.conf
 		echo "reloading samba service"
 		systemctl reload smb.service
 		if [ $? -ne 0 ]; then

@@ -76,10 +76,24 @@ fi
 source $CURRDIR/$CLUSTER_CONFIG
 
 # the node details of the script destination
-THISH=$NODE1_HN
-THISIP=$NODE1_IP
-THISNUM=1
-$INIT_HOST=$INITIALIZE_HOST # update the INIT_HOST value from the cluster configuration
+if [ $THISNUM = 1 ]; then
+	echo "installing cluster node 1"
+	THISH=$NODE1_HN
+	THISIP=$NODE1_IP
+elif [ $THISNUM = 2 ]; then
+	echo "installing cluster node 2"
+	THISH=$NODE2_HN
+	THISIP=$NODE2_IP
+elif [ $THISNUM = 3 ]; then
+	echo "installing cluster node 3"
+	THISH=$NODE3_HN
+	THISIP=$NODE3_IP
+else
+	echo "bad cluster node number in cluster config file, aborting script"
+	exit 1
+fi
+
+INIT_HOST=$INITIALIZE_HOST # update the INIT_HOST value from the cluster configuration
 
 echo "this server number is $THISNUM"
 #------------------------------------------------

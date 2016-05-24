@@ -5,6 +5,7 @@
 #################################################
 LOGTAG=NEO4J_SUPPORT
 # specify the neo4j directory tree
+CLUSTCONF=cluster.conf
 JDKCONF=jdk_config.sh
 AIDECONF=aide_config.sh
 AUDITCONF=audit_config.sh
@@ -13,11 +14,17 @@ SAMBAFILE=neo4j_smb.conf
 FIREWCONF=firewall_config.sh
 NEOLOG=neo4j_install.log
 NEOSTAGE=/opt/neo4j
-SAMBA="YES"
-JDK="NO"
-AIDE="NO"
-FIREW="YES"
-AUDIT="YES"
+
+#SAMBA="YES"
+#JDK="NO"
+#AIDE="NO"
+#FIREW="YES"
+#AUDIT="YES"
+
+if [[ -z $SAMBA || -z $JKD || -z $AIDE || -z $FIREW || -z $AUDIT ]]; then
+	echo "package variables not set, loading cluster.conf file"
+	source $CLUSTCONF
+fi
 
 
 if [ -d $NEOSTAGE ]; then
