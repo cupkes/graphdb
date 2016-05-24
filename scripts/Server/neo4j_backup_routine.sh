@@ -73,6 +73,6 @@ fi
 if [!-z $LASTOLDDIR ] && [ $NEOROTATE -le $PRUNEDATE ]; then	
 	echo $LASTOLDDIR > $DELETED
 	rm -r $LASTOLDDIR
-( echo $BODY ; uuencode $DELETED $(basename $DELETED) ) | $MAILER -s "$SUBJECT" "$RECIPIENTS"
+( echo $BODY | $MAILER -s "$SUBJECT" -a $DELETED "$RECIPIENTS"
 logger -p local0.notice -T $LOGTAG "backup and pruning complete"
 

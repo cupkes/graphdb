@@ -1,1 +1,1 @@
-using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/ServerGroup.csv" AS line fieldterminator '^' MATCH (g:Group {GroupAlias: line[1] }) MATCH (s:Silo {SiloName: line[0] })  CREATE (g)-[:LOCAL_ADMIN_OF]->(s);
+using PERIODIC COMMIT 10000 LOAD CSV FROM "file:///opt/neo4j/stage/DataSource/ServerGroup.csv" AS line fieldterminator '^' MATCH (s:Server {ServerName: line[0] }) MATCH (g:Group {GroupName: line[1] })  CREATE (g)-[:LOCAL_ADMIN_OF]->(s);
